@@ -1,11 +1,16 @@
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+package dao;
+
+import tables.Menu;
+
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MenuDAO extends AbstractDAO<Menu, Integer> {
+
+    public MenuDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public List<Menu> getAll() {
@@ -23,7 +28,7 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
                 lst.add(cus);
             }
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,12 +42,10 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
             PreparedStatement ps = getPrepareStatement("SELECT * FROM menu WHERE id= ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-            } else {
+            if (!rs.next()) {
                 System.out.println("no such entry");
                 return cus1;
             }
-            ;
             cus1.setId(rs.getInt(1));
             cus1.setName(rs.getString(3));
             cus1.setPrice(rs.getFloat(4));
@@ -50,7 +53,7 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
             cus1.setIdCat(rs.getInt(2));
             closeResSet(rs);
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,21 +61,20 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public void delete(Integer id) {
         try {
             PreparedStatement ps = getPrepareStatement("DELETE FROM menu WHERE id= ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     @Override
-    public boolean create(Menu entry) {
+    public void create(Menu entry) {
         try {
             String sql = "INSERT INTO menu (name, price, available) VALUES(?,?,?)";
             PreparedStatement ps = getPrepareStatement(sql);
@@ -82,25 +84,22 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
             //      ps.setInt(1, entry.getIdCat());
             ps.executeUpdate();
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     @Override
-    public boolean update(Integer id, Menu entry) {
+    public void update(Integer id, Menu entry) {
         String sql = "SELECT * FROM menu WHERE id=  " + id;
         try {
             Statement st = getStatement();   // ResultSet.CONCUR_UPDATABLE!
             ResultSet rs = st.executeQuery(sql);
-            if (rs.next()) {
-            } else {
+            if (!rs.next()) {
                 System.out.println("no such entry to update");
-                return false;
+                return;
             }
-            ;
             rs.updateString(3, entry.getName());
             rs.updateFloat(4, entry.getPrice());
             rs.updateInt(2, entry.getIdCat());
@@ -108,11 +107,10 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
             rs.updateRow();
             rs.close();
             closeStatement(st);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
 }

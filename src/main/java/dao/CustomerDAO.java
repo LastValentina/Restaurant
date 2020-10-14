@@ -1,14 +1,17 @@
-//package ;
+package dao;//package ;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import tables.Customer;
+
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CustomerDAO extends AbstractDAO<Customer, Integer> {
     public static final String SELECT_ALL_Customer = "SELECT * FROM customer";
+
+    public CustomerDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public List<Customer> getAll() {
@@ -26,7 +29,6 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
                 lst.add(cus);
             }
             closePrepareStatement(ps);
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,19 +42,17 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
             PreparedStatement ps = getPrepareStatement("SELECT * FROM customer WHERE id= ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-            } else {
+            if (!rs.next()) {
                 System.out.println("no such entry");
                 return cus1;
             }
-            ;
             cus1.setId(rs.getInt(1));
             cus1.setName(rs.getString(2));
             cus1.setDiscount(rs.getFloat(3));
             cus1.setValue(rs.getFloat(4));
             cus1.setCard(rs.getInt(5));
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,21 +60,20 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public void delete(Integer id) {
         try {
             PreparedStatement ps = getPrepareStatement("DELETE FROM customer WHERE id= ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     @Override
-    public boolean create(Customer entry) {
+    public void create(Customer entry) {
         try {
             String sql = "INSERT INTO customer (name, discount,value,cardNo) VALUES(?,?,?,?)";
             PreparedStatement ps = getPrepareStatement(sql);
@@ -84,25 +83,22 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
             ps.setInt(4, entry.getCard());
             ps.executeUpdate();
             closePrepareStatement(ps);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     @Override
-    public boolean update(Integer id, Customer entry) {
+    public void update(Integer id, Customer entry) {
         String sql = "SELECT * FROM customer WHERE id=  " + id;
         try {
             Statement st = getStatement();   // ResultSet.CONCUR_UPDATABLE!
             ResultSet rs = st.executeQuery(sql);
-            if (rs.next()) {
-            } else {
+            if (!rs.next()) {
                 System.out.println("no such entry to update");
-                return false;
+                return;
             }
-            ;
             rs.updateString(2, entry.getName());
             rs.updateFloat(3, entry.getDiscount());
             rs.updateFloat(4, entry.getValue());
@@ -110,11 +106,10 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
             rs.updateRow();
             rs.close();
             closeStatement(st);
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
 }

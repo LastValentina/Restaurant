@@ -1,4 +1,4 @@
-//package ;
+package dao;//package ;
 
 import java.sql.*;
 import java.util.List;
@@ -7,28 +7,19 @@ public abstract class AbstractDAO<E, K> {
     Connection connection;
     //   private ConnectionPool connectionPool;
 
-    public AbstractDAO() {
-        //      connectionPool = ConnectionPool.getConnectionPool();
-        //       connection = connectionPool.getConnection();
-        try {
-            SimpleConnectionBuilder c = new SimpleConnectionBuilder();
-            connection = c.getConnection();
-//            System.out.println("Соединение с СУБД выполнено.");
-        } catch (SQLException e) {
-            e.printStackTrace(); // обработка ошибок  DriverManager.getConnection
-            System.out.println("Ошибка SQL!");
-        }
+    public AbstractDAO(Connection connection) {
+        this.connection = connection;
     }
 
     public abstract List<E> getAll();
 
     public abstract E getEntryById(K id);
 
-    public abstract boolean update(K id, E entry);
+    public abstract void update(K id, E entry);
 
-    public abstract boolean delete(K id);
+    public abstract void delete(K id);
 
-    public abstract boolean create(E entry);
+    public abstract void create(E entry);
 
     // Возвращения экземпляра Connection в пул соединений
 //    public void returnConnectionInPool() {

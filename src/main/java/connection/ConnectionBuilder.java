@@ -1,4 +1,4 @@
-// package  ;
+package connection;// package  ;
 
 import java.sql.Connection;
 import java.sql.SQLException;
