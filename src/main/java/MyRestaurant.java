@@ -7,13 +7,13 @@ import java.util.Scanner;
 public class MyRestaurant {
     public static void main(String[] args) {
         SimpleConnectionBuilder c = new SimpleConnectionBuilder();
+        ConsoleMessage m = new ConsoleMessage();
         try (
                 Connection connection = c.getConnection();
                 Scanner sc = new Scanner(System.in)
         ) {
             int n;
             boolean qrun;
-            ConsoleMessage m = new ConsoleMessage();
             m.hi();
             Service ser = new Service(sc, connection);
             do {
@@ -23,31 +23,31 @@ public class MyRestaurant {
                     case 1:
                         ser.OrderAdd(sc, connection);
                         break;
-                    case 2:                                 // add new entry to table customer
+                    case 2:
                         ser.CustomerNew(sc, connection);
                         break;
-                    case 3:                                 //show all from customer
+                    case 3:
                         ser.CustomerShowAll(connection);
                         break;
-                    case 4:                                 //show customer by id
+                    case 4:
                         ser.CustomerById(sc, connection);
                         break;
-                    case 5:                                 //edit customer's data
+                    case 5:
                         ser.CustomerUpdate(sc, connection);
                         break;
-                    case 6:                                 //delete customer by id
+                    case 6:
                         ser.CustomerDelete(sc, connection);
                         break;
-                    case 7:                                 // insert entry into table menu
+                    case 7:
                         ser.MenuAdd(sc, connection);
                         break;
-                    case 8:                                 // show all from table menu
+                    case 8:
                         ser.MenuShowAll(connection);
                         break;
-                    case 9: // show all orders
+                    case 9:
                         ser.OrderShowAll(connection);
                         break;
-                    case 10:  //  quit from application
+                    case 10:
                         break;
                     default:
                         System.out.println("unfortunately your input is out of scope");
@@ -59,10 +59,11 @@ public class MyRestaurant {
                 int ans = Integer.parseInt(sc.next());
                 qrun = ans == 1;
             } while (qrun);
-            m.bye();
         } catch (SQLException e) {
-            e.printStackTrace(); // monitoring errors of DriverManager.getConnection
+            e.printStackTrace();
             System.out.println("SQL error");
+        } finally {
+            m.bye();
         }
     }
 }
