@@ -21,12 +21,13 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
             while (rs.next()) {
                 Menu cus = new Menu();
                 cus.setId(rs.getInt(1));
+                cus.setIdCat(rs.getInt(2));
                 cus.setName(rs.getString(3));
                 cus.setPrice(rs.getFloat(4));
                 cus.setAvail(rs.getInt(5));
-                cus.setIdCat(rs.getInt(2));
                 lst.add(cus);
             }
+            closeResSet(rs);
             closePrepareStatement(ps);
 
         } catch (SQLException e) {
@@ -100,12 +101,12 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
                 System.out.println("no such entry to update");
                 return;
             }
+            rs.updateInt(2, entry.getIdCat());
             rs.updateString(3, entry.getName());
             rs.updateFloat(4, entry.getPrice());
-            rs.updateInt(2, entry.getIdCat());
             rs.updateInt(5, entry.getAvail());
             rs.updateRow();
-            rs.close();
+            closeResSet(rs);
             closeStatement(st);
 
         } catch (SQLException e) {

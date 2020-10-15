@@ -1,4 +1,4 @@
-package dao;//package ;
+package dao;
 
 import tables.Customer;
 
@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CustomerDAO extends AbstractDAO<Customer, Integer> {
-    public static final String SELECT_ALL_Customer = "SELECT * FROM customer";
 
     public CustomerDAO(Connection connection) {
         super(connection);
@@ -16,7 +15,7 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
     @Override
     public List<Customer> getAll() {
         List<Customer> lst = new LinkedList<>();
-        PreparedStatement ps = getPrepareStatement(SELECT_ALL_Customer);
+        PreparedStatement ps = getPrepareStatement("SELECT * FROM customer");
         try {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -28,6 +27,7 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
                 cus.setCard(rs.getInt(5));
                 lst.add(cus);
             }
+            closeResSet(rs);
             closePrepareStatement(ps);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
             rs.updateFloat(4, entry.getValue());
             rs.updateInt(5, entry.getCard());
             rs.updateRow();
-            rs.close();
+            closeResSet(rs);
             closeStatement(st);
 
         } catch (SQLException e) {

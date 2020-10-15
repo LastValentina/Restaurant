@@ -1,11 +1,10 @@
-package dao;//package ;
+package dao;
 
 import java.sql.*;
 import java.util.List;
 
 public abstract class AbstractDAO<E, K> {
     Connection connection;
-    //   private ConnectionPool connectionPool;
 
     public AbstractDAO(Connection connection) {
         this.connection = connection;
@@ -21,12 +20,6 @@ public abstract class AbstractDAO<E, K> {
 
     public abstract void create(E entry);
 
-    // Возвращения экземпляра Connection в пул соединений
-//    public void returnConnectionInPool() {
-    //       connectionPool.returnConnection(connection);
-    //   }
-
-    // Получение экземпляра PrepareStatement
     public PreparedStatement getPrepareStatement(String sql) {
         PreparedStatement ps = null;
         try {
@@ -47,7 +40,6 @@ public abstract class AbstractDAO<E, K> {
         }
     }
 
-    // Получение экземпляра Statement
     public Statement getStatement() {
         Statement st = null;
         try {

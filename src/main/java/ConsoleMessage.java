@@ -1,5 +1,5 @@
+public class ConsoleMessage {
 
-public class ConsoleMenu {
     void start() {
         System.out.println("just input one of these numbers:");
         System.out.println("1: make order from menu");
@@ -13,28 +13,24 @@ public class ConsoleMenu {
         System.out.println("9: quit");
     }
 
-    void i_id() {
+    void input_id() {
         System.out.println("Input id");
     }
 
-    void i_some(String name) {
+    void input_some(String name) {
         System.out.println("Input " + name);
     }
 
-    void i_n() {
-        System.out.println("Input new value");
-    }
-
-    void o_up() {
+    void update_instruction() {
         System.out.println("some fields would be shown under line. every time input 1 - for updating or input 0 - to skip");
         System.out.println("----------------");
     }
 
-    void o_f(String d, String val) {
+    void output_value(String d, String val) {
         System.out.println(d + ": " + val);
     }
 
-    void o_f(String d, float val) {
+    void output_value(String d, float val) {
         System.out.println(d + ": " + val);
     }
 
