@@ -15,7 +15,7 @@ public class OrderDAO extends AbstractDAO<Order, Integer> {
     @Override
     public List<Order> getAll() {
         List<Order> lst = new LinkedList<>();
-        PreparedStatement ps = getPrepareStatement("SELECT * FROM order");
+        PreparedStatement ps = getPrepareStatement("SELECT * FROM orders");
         try {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -41,7 +41,7 @@ public class OrderDAO extends AbstractDAO<Order, Integer> {
     public Order getEntryById(Integer id) {
         Order ord1 = new Order();
         try {
-            PreparedStatement ps = getPrepareStatement("SELECT * FROM order WHERE id= ?");
+            PreparedStatement ps = getPrepareStatement("SELECT * FROM orders WHERE id= ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -66,7 +66,7 @@ public class OrderDAO extends AbstractDAO<Order, Integer> {
     @Override
     public void delete(Integer id) {
         try {
-            PreparedStatement ps = getPrepareStatement("DELETE FROM order WHERE id= ?");
+            PreparedStatement ps = getPrepareStatement("DELETE FROM orders WHERE id= ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             closePrepareStatement(ps);
@@ -79,8 +79,7 @@ public class OrderDAO extends AbstractDAO<Order, Integer> {
     @Override
     public void create(Order entry) {
         try {
-            String sql = "INSERT INTO order (customer_id, menu_id, qty, discount, value) VALUES(?,?,?,?,?)";
-            //           String sql = "INSERT INTO order (customer_id, menu_id, qty) VALUES(?,?,?)";
+            String sql = "INSERT INTO orders (customer_id, menu_id, qty, discount, value) VALUES(?,?,?,?,?)";
             PreparedStatement ps = getPrepareStatement(sql);
             ps.setInt(1, entry.getIdCust());
             ps.setInt(2, entry.getIdMenu());
@@ -97,7 +96,7 @@ public class OrderDAO extends AbstractDAO<Order, Integer> {
 
     @Override
     public void update(Integer id, Order entry) {
-        String sql = "SELECT * FROM order WHERE id=  " + id;
+        String sql = "SELECT * FROM orders WHERE id=  " + id;
         try {
             Statement st = getStatement();   // ResultSet.CONCUR_UPDATABLE!
             ResultSet rs = st.executeQuery(sql);

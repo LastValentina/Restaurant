@@ -10,7 +10,8 @@ public class ConsoleMessage {
         System.out.println("6: delete customer by id");
         System.out.println("7: add new meal to menu");
         System.out.println("8: show all menu");
-        System.out.println("9: quit");
+        System.out.println("9: show all orders");
+        System.out.println("10: quit");
     }
 
     void input_id() {
