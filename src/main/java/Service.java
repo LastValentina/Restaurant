@@ -121,6 +121,18 @@ public class Service {
         cDAO.delete(Integer.parseInt(sc.next()));
     }
 
+    public void CustomerCount(Connection connection) {
+        CustomerDAO cDAO = new CustomerDAO(connection);
+        int count = cDAO.qtyEntry();
+        System.out.println("Number of records in table customer: " + count);
+    }
+
+    public void CustomerIdLastEntry(Connection connection) {
+        CustomerDAO cDAO = new CustomerDAO(connection);
+        int id = cDAO.IdLastEntry();
+        System.out.println("id of last entry in table customer: " + id);
+    }
+
     public void MenuShowAll(Connection connection) {
         MenuDAO mDAO = new MenuDAO(connection);
         List<Menu> list = mDAO.getAll();

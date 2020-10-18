@@ -112,4 +112,36 @@ public class CustomerDAO extends AbstractDAO<Customer, Integer> {
         }
     }
 
+    public int qtyEntry() {
+        int n = 0;
+        PreparedStatement ps = getPrepareStatement("SELECT COUNT(*) FROM customer");
+        try {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                n = rs.getInt(1);
+            }
+            closeResSet(rs);
+            closePrepareStatement(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return n;
+    }
+
+    public int IdLastEntry() {
+        int id = 0;
+        PreparedStatement ps = getPrepareStatement("SELECT * FROM customer ORDER BY id DESC LIMIT 1");
+        try {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            closeResSet(rs);
+            closePrepareStatement(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
 }

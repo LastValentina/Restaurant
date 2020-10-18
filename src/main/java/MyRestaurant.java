@@ -20,6 +20,10 @@ public class MyRestaurant {
                 m.start();
                 n = Integer.parseInt(sc.next());
                 switch (n) {
+                    case 0:
+                        ser.CustomerCount(connection);
+                        ser.CustomerIdLastEntry(connection);
+                        break;
                     case 1:
                         ser.OrderAdd(sc, connection);
                         break;
