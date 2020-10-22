@@ -1,6 +1,7 @@
 package tables;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Order implements Serializable {
     private int id;
@@ -56,6 +57,24 @@ public class Order implements Serializable {
 
     public void setValue(float value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return id == order.id &&
+                id_cust == order.id_cust &&
+                id_menu == order.id_menu &&
+                qty == order.qty &&
+                Float.compare(order.discount, discount) == 0 &&
+                Float.compare(order.value, value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, id_cust, id_menu, qty, discount, value);
     }
 
     @Override

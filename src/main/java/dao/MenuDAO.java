@@ -114,4 +114,19 @@ public class MenuDAO extends AbstractDAO<Menu, Integer> {
         }
     }
 
+    public int IdLastEntry() {
+        int id = 0;
+        PreparedStatement ps = getPrepareStatement("SELECT * FROM menu ORDER BY id DESC LIMIT 1");
+        try {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            closeResSet(rs);
+            closePrepareStatement(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
 }
