@@ -2,12 +2,16 @@ import connection.SimpleConnectionBuilder;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MyRestaurant {
     public static void main(String[] args) {
         SimpleConnectionBuilder c = new SimpleConnectionBuilder();
         ConsoleMessage m = new ConsoleMessage();
+        List<String> list = new ArrayList<>();
+        list.stream().flatMap(x -> new ArrayList<String>().stream());
         try (
                 Connection connection = c.getConnection();
                 Scanner sc = new Scanner(System.in)
